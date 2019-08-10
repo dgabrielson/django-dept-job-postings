@@ -1,0 +1,92 @@
+{% extends 'jobpost/__base.html' %}
+{% load markup %}
+
+{# ########################################### #}
+
+{% block page_title %}Job Postings{% endblock %}
+{% block title %}Job Postings{% endblock %}
+
+{# ########################################### #}
+
+{% block content %}
+
+{% if category_list %}
+    <p>
+    The following are links to pages that may be of interest to students who
+    are currently (or soon will be) job hunting. Most of these sites are for
+    graduate students but some have tips/listings for undergraduate students
+    as well.
+    If you find a site that you think should be listed here please let us
+    know so it can be added.
+    </p>
+
+    {% for category in category_list %}
+        {% with links=category.joburl_set.active %}
+            {% if links %}
+                {% if links|length == 1 %}
+                    <h3>{{ category.verbose_name }}</h3>
+                {% else %}
+                    <h3>{{ category.verbose_name_plural }}</h3>
+                {% endif %}
+                {% if category.note %}
+                    {{ category.note|restructuredtext }}
+                {% endif %}
+                <ul class="simple">
+                {% for link in links %}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a>
+                        {% if link.notes %}
+                            ({{ link.notes }})
+                        {% endif %}
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+{% endif %}
+
+{% if job_list %}
+    <p>
+        This is by no means an exhaustive list of available jobs.
+        {% if category_list %}
+            The sites above should also be checked frequently.
+        {% endif %}
+    </p>
+
+    <center>
+        <table style="border-spacing: 0.75em">
+            <tr valign="bottom">
+                <th align="left">Job Title</th>
+                <th align="left">Where</th>
+                <th align="left">Degree Required</th>
+                <th align="left">Deadline</th>
+            </tr>
+            {% for job in job_list %}
+                <tr valign="top">
+                    <td align="left"><a href="{{ job.get_absolute_url }}">{{ job.title }}</a></td>
+                    <td align="left">{{ job.where }}</td>
+                    <td align="left">{{ job.degree_required }}</td>
+                    <td align="left">{{ job.deadline|date:"F j, Y" }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </center>
+{% else %}
+    <p>
+        <strong>Sorry</strong>,
+        there are no jobs posted right now.
+    </p>
+{% endif %}
+
+
+
+{% endblock content %}
+
+
+{# ########################################### #}
+
+{% block page_breadcrumbs %}
+    {{ block.super }}
+{% endblock page_breadcrumbs %}
+
+
+{# ########################################### #}

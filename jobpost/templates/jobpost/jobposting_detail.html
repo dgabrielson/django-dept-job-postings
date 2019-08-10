@@ -1,0 +1,79 @@
+{% extends 'jobpost/jobposting_list.html' %}
+{% load markup %}
+
+{# ########################################### #}
+
+{% block page_title %}{{ job.title }}{% endblock %}
+{% block title %}{{ job.title }}{% endblock %}
+
+{# ########################################### #}
+
+{% block content %}
+
+    <center>
+        <table class="job-info">
+            <tr>
+                <th align="right">Location:</th>
+                <td>{{ job.where }}</td>
+            </tr>
+            {% if job.degree_required %}
+            <tr>
+                <th align="right">Degree Required:</th>
+                <td>{{ job.degree_required }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th align="right">Deadline:</th>
+                <td>{{ job.deadline|date:"l, F j, Y" }}</td>
+            </tr>
+            {% if job.url %}
+                <tr>
+                    <th align="right"></th>
+                    <td><a href="{{ job.url }}" target="_blank">{{ job.url }}</a></td>
+                </tr>
+            {% endif %}
+            {% if job.contact_info %}
+                <tr>
+                    <th align="right">Contact:</th>
+                    <td>{{ job.contact_info|restructuredtext }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th align="right">Note:</th>
+                    <td>Applications must go to<br>{{ job.where }}.</td>
+                </tr>
+            {% endif %}
+            {% if job.notes %}
+                <tr>
+                    <th align="right"></th>
+                    <td>{{ job.notes }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </center>
+
+    <div class="job-details">
+        {{ job.content|restructuredtext }}
+    </div>
+
+    <center>
+        <a href="{% url 'jobpost-list' %}">[Back to the jobs list.]</a>
+    </center>
+
+{% endblock %}
+
+{# ########################################### #}
+
+{% block page_breadcrumbs %}
+    {{ block.super }}
+    {% with url=object.get_absolute_url %}
+        <span class="divider">&gt;</span>
+        {% if url != request.path %}
+            <a href="{{ url }}">{{ job }}</a>
+        {% else %}
+            {{ job }}
+        {% endif %}
+    {% endwith %}
+{% endblock page_breadcrumbs %}
+
+{# ########################################### #}

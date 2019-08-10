@@ -1,0 +1,12 @@
+venv
+jobs/demo_site/demo.db
+build
+dist
+test
+
+syntax: glob
+
+*.egg-info
+*.pyc
+*~
+.DS_Store

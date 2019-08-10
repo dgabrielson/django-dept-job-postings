@@ -1,0 +1,8 @@
+{% url "jobpost-list" as url %}
+{% if url %}
+    {% if url != request.path %}
+        <a href="{{ url }}">Jobs</a>
+    {% else %}
+        Jobs
+    {% endif %}
+{% endif %}

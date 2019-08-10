@@ -1,0 +1,4 @@
+include requirements.txt
+include LICENSE.txt
+#recursive-include jobpost/static *
+recursive-include jobpost/templates *
